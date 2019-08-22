@@ -6,10 +6,13 @@
 		<title>Countdown</title>
 	</head>
 	<body>
-		<div style="display: flex; align-items: center; justify-content: center; height: 100vh;">
+		<div style="display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100vh;">
 			<p style="text-align: center; font-family: sans-serif; font-size: 90px;">
 			<span id="days" style="font-weight: bold; font-size: 700px;"></span><br>
 			days until NSDI deadline
+			</p>
+			<p style="text-align: center; font-family: sans-serif; font-size: 60px;">
+			Stata: <span id="bb-stata"></span> bikes → SidPac: <span id="bb-sidpac"></span> docks
 			</p>
 		</div>
 		<script>
@@ -19,6 +22,22 @@ function refresh() {
 	var diff = ftdeadline - nowtime;
 	var days = Math.round(diff / (60 * 60 * 1000 * 24));
 	document.getElementById("days").innerHTML = days.toString();
+	var xmlhttp = new XMLHttpRequest();
+	xmlhttp.onreadystatechange = function() {
+		if (this.readyState == 4 && this.status == 200) {
+			var d = JSON.parse(this.responseText)["data"]["stations"];
+			var stata = d.filter(function(obj) {
+				return obj["station_id"] == 80;
+			})[0];
+			var sidpac = d.filter(function(obj) {
+				return obj["station_id"] == 178;
+			})[0];
+			document.getElementById("bb-stata").innerHTML = stata["num_bikes_available"].toString();
+			document.getElementById("bb-sidpac").innerHTML = sidpac["num_docks_available"].toString();
+		}
+	};
+	xmlhttp.open('GET', 'https://gbfs.bluebikes.com/gbfs/en/station_status.json');
+	xmlhttp.send();
 };
 refresh();
 setInterval(refresh, 60 * 1000); // 60 * 1000 milsec
