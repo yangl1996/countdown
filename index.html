@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width,initial-scale=1">
+		<title>Countdown</title>
+	</head>
+	<body>
+		<div style="display: flex; align-items: center; justify-content: center; height: 100vh;">
+			<p style="text-align: center; font-family: sans-serif; font-size: 5vh;">
+			<span id="days" style="font-weight: bold; font-size: 30vh;"></span><br>
+			days until NSDI deadline
+			</p>
+		</div>
+		<script>
+function refresh() {
+	var nowtime = new Date();
+	var ftdeadline = new Date(2019, 8, 19, 8, 59);
+	var diff = ftdeadline - nowtime;
+	var days = Math.round(diff / (60 * 60 * 1000 * 24));
+	document.getElementById("days").innerHTML = days.toString();
+};
+refresh();
+setInterval(refresh, 60 * 1000); // 60 * 1000 milsec
+		</script>
+	</body>
+</html>
