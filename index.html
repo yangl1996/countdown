@@ -18,7 +18,7 @@
 		<script>
 function refresh() {
 	var nowtime = new Date();
-	var ftdeadline = new Date(2019, 8, 19, 8, 59);
+	var ftdeadline = new Date(2019, 8, 19, 11, 59);
 	var diff = ftdeadline - nowtime;
 	var days = Math.round(diff / (60 * 60 * 1000 * 24));
 	document.getElementById("days").innerHTML = days.toString();
